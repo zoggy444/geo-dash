@@ -12,8 +12,6 @@ import type { AreaType } from './types';
 import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../data/regions-version-simplifiee.json';
 
-export const MAP_CENTER:[number,number] = [46.6034, 1.8883]; // Center of France
-
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
 ));
@@ -22,7 +20,7 @@ const dptInitKVMap = new Map<string, string>(
 );
 
 function getRandomKey(collection:Map<string, string>) {
-    let keys = Array.from(collection.keys());
+    const keys = Array.from(collection.keys());
     return keys[Math.floor(Math.random() * keys.length)];
 }
 

@@ -1,11 +1,11 @@
 import { MapContainer } from 'react-leaflet'
 import { GeoJSON } from 'react-leaflet/GeoJSON'
-import { MAP_CENTER } from "../../App";
 import type { GeoJsonObject } from 'geojson';
 import type { LeafletEvent, } from 'leaflet';
 
 import departmentData from '../../../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../../../data/regions-version-simplifiee.json';
+import { MAP_CENTER } from '../../utils/constants';
 
 import '../../index.css'
 import "normalize.css";
@@ -15,9 +15,6 @@ import GamePrompter from "./GamePrompter";
 import MapControl from "../reusable-ui/MapControl";
 import type { GameProps, GeoDataType } from '../../types';
 import { Button } from '@blueprintjs/core';
-import { useMemo, useState } from 'react';
-
-// const FRANCE_BOUNDS = new LatLngBounds([-5.156709, 41.320594],[9.707940, 51.119273])
 
 function Game({
   gameMode,

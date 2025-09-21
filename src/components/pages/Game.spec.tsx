@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
-import Game from './Game';
-import type { GameProps } from '../../types';
+import { test, expect } from "@playwright/experimental-ct-react";
+import Game from "./Game";
+import type { GameProps } from "../../types";
 
-const handleAreaClick = (name:string):void => {
+const handleAreaClick = (name: string): void => {
   if (mockState.guessedCorrectly) return; // Do not allow more guesses if already guessed correctly
   if (mockState.guessedIncorrectly.indexOf(name) !== -1) return; // Don't guess several times the same area
   if (mockState.guessedIncorrectly.length >= 3) return; // Do not allow more than 3 incorrect guesses
@@ -11,32 +11,26 @@ const handleAreaClick = (name:string):void => {
   } else {
     mockState.guessedIncorrectly = [...mockState.guessedIncorrectly, name];
   }
-}
+};
 
-let mockState: GameProps = {
-  gameMode: 'region',
-  toGuess: 'Bretagne',
+const mockState: GameProps = {
+  gameMode: "region",
+  victory: false,
+  toGuess: "Bretagne",
   guessedCorrectly: null,
   guessedIncorrectly: [],
+  regGuessMap: new Map<string, string>(),
+  dptGuessMap: new Map<string, string>(),
   onAreaClick: handleAreaClick,
   onNewRoundClick: () => {}, // todo adapt
   onSettingsClick: () => {}, // todo adapt
-}
+  onStartGameClick: () => {},
+};
 
 test.describe("@UIElements, basics", () => {
-  
-  test("Zoom control is not here", async ({ mount}) => {
-    const component = mount(
-      <Game
-        gameMode={mockState.gameMode}
-        toGuess={mockState.toGuess}
-        guessedCorrectly={mockState.guessedCorrectly}
-        guessedIncorrectly={mockState.guessedIncorrectly}
-        onAreaClick={mockState.onAreaClick}
-        onNewRoundClick={mockState.onNewRoundClick}
-        onSettingsClick={mockState.onSettingsClick}/>
-    );
-    const zoomControl =  (await component).locator('.leaflet-control-zoom');
+  test("Zoom control is not here", async ({ mount }) => {
+    const component = mount(<Game {...mockState} />);
+    const zoomControl = (await component).locator(".leaflet-control-zoom");
     expect(await zoomControl.count()).toBe(0);
   });
 
@@ -56,5 +50,4 @@ test.describe("@UIElements, basics", () => {
 
     expect(bgColor).toHaveCSS('background-color', 'white');
   });*/
-
 });

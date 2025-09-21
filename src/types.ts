@@ -1,42 +1,38 @@
-import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
-import regionData from '../data/regions-version-simplifiee.json';
-
 export type GeoDataType = {
   type: string;
-  features: ({
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: number[][][];
-    };
-    properties: {
-      code: string;
-      nom: string;
-    };
-  } | {
-    type: string;
-    geometry: {
-      type: string;
-      coordinates: number[][][][];
-    };
-    properties: {
-      code: string;
-      nom: string;
-    };
-  })[];
-}
+  features: (
+    | {
+        type: string;
+        geometry: {
+          type: string;
+          coordinates: number[][][];
+        };
+        properties: {
+          code: string;
+          nom: string;
+        };
+      }
+    | {
+        type: string;
+        geometry: {
+          type: string;
+          coordinates: number[][][][];
+        };
+        properties: {
+          code: string;
+          nom: string;
+        };
+      }
+  )[];
+};
 
-const dptCodes = departmentData.features.map(f => f.properties.code);
-const regCodes = regionData.features.map(f => f.properties.code);
+export type AreaType = "region" | "department";
 
-const dptNames = departmentData.features.map(f => f.properties.nom);
-const regNames = regionData.features.map(f => f.properties.nom);
-
-
-
-export type AreaType = 'region' | 'department';
-
-export type ControlPositionType = "bottomleft" | "bottomright" | "topleft" | "topright";
+export type ControlPositionType =
+  | "bottomleft"
+  | "bottomright"
+  | "topleft"
+  | "topright";
 
 export type GuessStateType = {
   gameMode: AreaType;
@@ -48,7 +44,7 @@ export type GuessStateType = {
   deptToGuess: string;
   deptGuessed: boolean;
   deptWrongGuesses: string[];
-}
+};
 
 export type GameSettingProps = {
   gameMode: string;
@@ -73,7 +69,7 @@ export type GameProps = {
 export type MapControlProps = {
   position: ControlPositionType;
   children?: React.ReactNode;
-}
+};
 
 export type GamePrompterProps = {
   victory: boolean;
@@ -83,4 +79,3 @@ export type GamePrompterProps = {
   onStartGameClick: () => void;
   onNewRoundClick: () => void;
 };
-
