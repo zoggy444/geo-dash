@@ -45,7 +45,7 @@ test.describe("@UIElements, basics", () => {
         onAreaClick={mockState.onAreaClick}/>
     );
     (await component).waitFor({state: 'attached'})
-    await page.screenshot({ path: "tests/screenshots/bg-color.png" })
+    await page.screenshot({ path: "test-results/screenshots/bg-color.png" })
     const bgColor =  (await component).locator('.leaflet-container');
 
     expect(bgColor).toHaveCSS('background-color', 'white');

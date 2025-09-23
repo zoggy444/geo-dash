@@ -1,29 +1,30 @@
-import { defineConfig } from '@playwright/test';
-import { defineBddConfig } from 'playwright-bdd';
-export const AUTH_FILE = 'playwright/.auth/user.json';
+import { defineConfig } from "@playwright/test";
+import { defineBddConfig } from "playwright-bdd";
+export const AUTH_FILE = "playwright/.auth/user.json";
 
 export default defineConfig({
-  reporter: 'html',
+  reporter: "html",
+  timeout: 30000,
   use: {
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    screenshot: "only-on-failure",
+    video: "retain-on-failure",
   },
   projects: [
     {
-      name: 'auth',
-      testDir: 'features/auth',
+      name: "auth",
+      testDir: "features/auth",
       testMatch: /setup\.ts/,
     },
     {
-      name: 'chromium',
+      name: "chromium",
       testDir: defineBddConfig({
-        features: 'features/*.feature',
-        steps: 'features/steps/*.ts',
+        features: "features/*.feature",
+        steps: "features/steps/*.ts",
       }),
       use: {
         storageState: AUTH_FILE,
       },
-      dependencies: ['auth'],
+      dependencies: ["auth"],
     },
   ],
 });

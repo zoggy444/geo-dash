@@ -4,7 +4,7 @@ import { Given, When, Then } from './fixtures.js';
 import departmentData from '../../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../../data/regions-version-simplifiee.json' with { type: "json" };
 
-const url = process.env.BASE_URL || 'https://ominous-carnival-ppj9rx5rvpw376r4-5173.app.github.dev/';
+const url = process.env.BASE_URL || 'https://refactored-capybara-5xg5qw7qppxfprv4-5173.app.github.dev/';
 
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
@@ -15,8 +15,10 @@ const dptInitKVMap = new Map<string, string>(
 
 type mockStateType = {
   gameMode: 'reg' | 'dpt';
+  regToGuess?: string;
   regLeftToGuess: Map<string, string>;
   regWrongGuessKeys: string[];
+  dptToGuess?: string;
   dptLeftToGuess: Map<string, string>;
   dptWrongGuessKeys: string[];
   hoverKey?: string;
@@ -41,7 +43,7 @@ function resetState () {
 }
 
 async function getToGuessKey(page: Page) {
-  let KVMap = new Map(mockState[`${mockState.gameMode}LeftToGuess`])
+  const KVMap = new Map(mockState[`${mockState.gameMode}LeftToGuess`])
   const toGuess = await page.locator('.to-guess-name').textContent();
   const entries = [...KVMap.entries()]
       .find(([, g]) => g === toGuess);
@@ -52,7 +54,7 @@ async function getToGuessKey(page: Page) {
 }
 
 async function getRdmKeys(page: Page, exWrongGuesses=true, nb=1) {
-  let KVMap = new Map<string, string>(mockState[`${mockState.gameMode}LeftToGuess`])
+  const KVMap = new Map<string, string>(mockState[`${mockState.gameMode}LeftToGuess`])
   const wrongGuessKeys = mockState[`${mockState.gameMode}WrongGuessKeys`]
   const toGuessKey = await getToGuessKey(page);
   if (toGuessKey) KVMap.delete(toGuessKey);
@@ -63,7 +65,7 @@ async function getRdmKeys(page: Page, exWrongGuesses=true, nb=1) {
     }
   }
   const keys = Array.from(KVMap.keys());
-  let res:string[] = []
+  const res:string[] = []
   for (let i=0; i<nb; i++) {
     res.push(keys[Math.floor(Math.random() * keys.length)])
   }
@@ -74,7 +76,7 @@ async function getRdmKeys(page: Page, exWrongGuesses=true, nb=1) {
 Given('I am on the game page', async ({ page }) => {
   resetState();
   await page.goto(url);
-  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('domcontentloaded', {timeout: 20000});
   expect(await page.title()).toBe('Geoguesser Mini');
 });
 
@@ -92,7 +94,7 @@ Given('I selected a game mode', async ({ page }) => {
 Given('I am in a game', async ({ page }) => {
   resetState();
   await page.goto(url);
-  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('domcontentloaded', {timeout: 20000});
   expect(await page.title()).toBe('Geoguesser Mini');
   await page.click('button:has-text("Start Game")');
   await page.waitForSelector('.leaflet-container'); // Wait for the map to load
@@ -102,7 +104,6 @@ Given('I am in a game', async ({ page }) => {
 });
 
 Given('I have made two incorrect guesses', async ({ page }) => {
-  const toGuess = await page.locator('.to-guess-name').textContent();
   const guessedKeys = await getRdmKeys(page, true, 2);
   // console.log(`Guessing: ${toGuess} with wrong keys: ${guessedKeys}`);
   await page.locator(`.area-${guessedKeys[0]}`).click();
@@ -110,7 +111,7 @@ Given('I have made two incorrect guesses', async ({ page }) => {
   mockState[`${mockState.gameMode}WrongGuessKeys`] = guessedKeys;
 });
 
-Given('I succeeded in guessing an area', async ({ page }, arg: string) => {
+Given('I succeeded in guessing an area', async ({ page }) => {
   const toGuessKey = await getToGuessKey(page)
   await page.locator(`.area-${toGuessKey}`).click();
   
@@ -119,7 +120,7 @@ Given('I succeeded in guessing an area', async ({ page }, arg: string) => {
   await expect(button).toBeEnabled();
 });
 
-Given('I failed in guessing an area', async ({ page }, arg: string) => {
+Given('I failed in guessing an area', async ({ page }) => {
   const wrongGuesses = await getRdmKeys(page, true, 3)
   for (let I = 0; I < wrongGuesses.length; I++) {
     await page.locator(`.area-${wrongGuesses[I]}`).click();
@@ -130,9 +131,9 @@ Given('I failed in guessing an area', async ({ page }, arg: string) => {
   await expect(button).toBeEnabled();
 });
 
-Given('there is only one area left to guess', async ({ page }, arg: string) => {
+Given('there is only one area left to guess', async ({ page }) => {
   // Guess correctly until only one area left to guess
-  let KVMap = new Map<string, string>(mockState[`${mockState.gameMode}LeftToGuess`])
+  const KVMap = new Map<string, string>(mockState[`${mockState.gameMode}LeftToGuess`])
   let toGuessKey: string;
   let button: Locator;
   while (KVMap.size > 1) {
@@ -146,7 +147,7 @@ Given('there is only one area left to guess', async ({ page }, arg: string) => {
 
 When('I land on the game page', async ({ page }) => {
   await page.goto(url);
-  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState('domcontentloaded', {timeout: 20000});
   expect(await page.title()).toBe('Geoguesser Mini');
 });
 
@@ -166,15 +167,13 @@ When('I hover over an area on the map', async ({ page }) => {
 });
 
 When('I guess correctly', async ({ page }) => {
-  const toGuess = mockState[`${mockState.gameMode}ToGuess`];
   const toGuessKey = await getToGuessKey(page);
   // console.log(`Guessing: ${toGuess} with key: ${toGuessKey}`);
   await page.locator(`.area-${toGuessKey}`).click();
 });
 
 When('I guess incorrectly', async ({ page }) => {
-  const toGuess = await page.locator('.to-guess-name').textContent();
-  let wrongGuessKey = (await getRdmKeys(page, true, 1))[0];
+  const wrongGuessKey = (await getRdmKeys(page, true, 1))[0];
   // console.log(`Guessing: ${toGuess} with wrong key: ${wrongGuessKey}`);
   await page.locator(`.area-${wrongGuessKey}`).click();
   mockState[`${mockState.gameMode}WrongGuessKeys`].push(wrongGuessKey);
@@ -270,9 +269,7 @@ Then('the area I selected should be highlighted red on the map', async ({ page }
 });
 
 Then('I should not be able to make another guess', async ({ page }) => {
-  const toGuess = await page.locator('.to-guess-name').textContent();
-
-  let wrongGuessKey= (await getRdmKeys(page))[0];
+  const wrongGuessKey= (await getRdmKeys(page))[0];
   // console.log(`Guessing: ${toGuess} with wrong key: ${wrongGuessKey}`);
   const guessedArea = page.locator(`.area-${wrongGuessKey}`);
   await guessedArea.click();
@@ -288,8 +285,7 @@ Then('I should not be able to make another guess', async ({ page }) => {
 });
  
 Then('the correct area should be intermitentently highlighted on the map', async ({ page }) => {
-  const toGuess = await page.locator('.to-guess-name').textContent();
-  let correctKey = await getToGuessKey(page);
+  const correctKey = await getToGuessKey(page);
   // console.log(`correctKey: ${correctKey}, hoverKey: ${mockState.hoverKey}`);
   const correctArea = page.locator(`.area-${correctKey}`);
   expect(correctArea).toContainClass('failed');
