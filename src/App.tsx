@@ -5,7 +5,7 @@ import "normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 
-import GameSetting from './components/pages/GameSetting';
+import GameSettings from './components/pages/GameSettings';
 import Game from './components/pages/Game';
 import type { AreaType } from './types';
 
@@ -111,7 +111,7 @@ function App() {
       ) : (
         <>
           <h1>Geoguesser Mini</h1>
-          <GameSetting 
+          <GameSettings 
           gameMode={gameMode}
           onChangeGameMode={(m:AreaType) => setGameMode(m)}
           onStartGame={handleStartGame}/>

@@ -46,7 +46,7 @@ export type GuessStateType = {
   deptWrongGuesses: string[];
 };
 
-export type GameSettingProps = {
+export type GameSettingsProps = {
   gameMode: string;
   onChangeGameMode: (mode: AreaType) => void;
   onStartGame: () => void;
