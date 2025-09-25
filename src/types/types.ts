@@ -1,30 +1,31 @@
 export type GeoDataType = {
   type: string;
-  features: (
-    | {
-        type: string;
-        geometry: {
-          type: string;
-          coordinates: number[][][];
-        };
-        properties: {
-          code: string;
-          nom: string;
-        };
-      }
-    | {
-        type: string;
-        geometry: {
-            type: string;
-          coordinates: number[][][][];
-        };
-        properties: {
-          code: string;
-          nom: string;
-        };
-      }
-  )[];
+  features: GeoFeatureType[];
 };
+
+export type GeoFeatureType =
+  | {
+      type: string;
+      geometry: {
+        type: string;
+        coordinates: number[][][];
+      };
+      properties: {
+        code: string;
+        nom: string;
+      };
+    }
+  | {
+      type: string;
+      geometry: {
+        type: string;
+        coordinates: number[][][][];
+      };
+      properties: {
+        code: string;
+        nom: string;
+      };
+    };
 
 export type AreaType = "region" | "department";
 

@@ -11,6 +11,8 @@ import type { AreaType } from './types/types';
 
 import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../data/regions-version-simplifiee.json';
+import { styled } from '@linaria/react';
+import { theme } from './theme/theme';
 
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
@@ -96,7 +98,7 @@ function App() {
   }
 
   return (
-    <>
+    <AppStyled>
       {inGame ? (
         <>
           <Game gameMode={gameMode} toGuess={toGuess}
@@ -112,7 +114,6 @@ function App() {
         </>  
       ) : (
         <>
-          <h1>Geoguesser Mini</h1>
           <GameSettings 
           gameModes={gameModes}
           gameMode={gameMode}
@@ -120,8 +121,15 @@ function App() {
           onStartGame={handleStartGame}/>
         </>
       )}
-    </>
+    </AppStyled>
   )
 }
 
-export default App
+export default App;
+
+const AppStyled = styled.div`
+  width: 100wh;
+  height: 100vh;
+  background-color: ${theme.colors.parchmentWhite};
+  padding: 2rem;
+`;

@@ -12,10 +12,14 @@ import "normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 import GamePrompter from "./GamePrompter";
-import MapControl from "../reusable-ui/MapControl";
-import type { GeoDataType } from '../../types/types';
-import { Button } from '@blueprintjs/core';
+
+import type { GeoDataType, GeoFeatureType } from '../../types/types';
 import type { GameProps } from '../../types/propsTypes';
+import { styled } from '@linaria/react';
+import { theme } from '../../theme/theme';
+import Panel from '../reusable-ui/Panel';
+import MapControl from '../reusable-ui/MapControl';
+import Button from '../reusable-ui/Button';
 
 function Game({
   gameMode,
@@ -46,7 +50,7 @@ function Game({
     // Highlight the hovered area without changing color
     layer.setStyle({
       weight: 3, // Increase stroke width to highlight
-      fillOpacity: 1 // Increase fill opacity
+      fillOpacity: 0.6 // Increase fill opacity
     })
   }
 
@@ -55,12 +59,12 @@ function Game({
     // Reset the style when mouse leaves
     layer.setStyle({
       weight: 1, // Reset stroke width
-      fillOpacity: 0.25 // Reset fill opacity
+      fillOpacity: 0.4 // Reset fill opacity
     });
   }
 
   return (
-  <> 
+  <GameStyled> 
     <MapContainer
         center={MAP_CENTER}
         dragging={false}
@@ -73,20 +77,7 @@ function Game({
         <GeoJSON
           key={`${f.properties.nom === toGuess ? guessedIncorrectly.length >=3 ? 'failed-' : 'to-guess-' : '' }${f.properties.code}`}
           data={f as GeoJsonObject}
-          style={{
-            color: `${ !areaMap.get(f.properties.code) ? 'green' : guessedIncorrectly.indexOf(f.properties.nom) !== -1 ? 'red' : 'blue'}`, weight: 1,
-            fillColor: `${ !areaMap.get(f.properties.code) ? 'lightgreen' : guessedIncorrectly.indexOf(f.properties.nom) !== -1 ? 'lightred' : 'lightblue'}`,
-            fillOpacity: 0.25,
-            className: `
-              area-${f.properties.code}
-              ${f.properties.nom === toGuess ? 
-                (
-                  guessedIncorrectly.length >=3 ?
-                  'failed' :
-                  'to-guess'
-                ) :
-                '' }`
-            }}
+          style={getGeoJsonStyle(f, areaMap, guessedIncorrectly, toGuess)}
           eventHandlers={{
           click: onGeoJsonClick,
           mouseover: onGeoJsonMouseOver,
@@ -95,9 +86,12 @@ function Game({
         </GeoJSON>
       ))}
       <MapControl key='topleft' position='topleft'>
-        <Button onClick={onSettingsClick}>Quit Game</Button>
+        <Panel>
+          {/* @todo: ghost variant*/}
+          <Button label="Quit Game" onClick={onSettingsClick}/>
+        </Panel>
       </MapControl>
-      <MapControl key='topright' position='topright'>
+      <MapControl key='bottomleft' position='bottomleft'>
         <GamePrompter toGuess={toGuess} victory={victory} guessedCorrectly={guessedCorrectly}
             guessedIncorrectly={guessedIncorrectly}
             onStartGameClick={onStartGameClick}
@@ -105,8 +99,29 @@ function Game({
       </MapControl>
     </MapContainer>
     
-  </>
+  </GameStyled>
   )
 }
 
+function getGeoJsonStyle(f:GeoFeatureType, areaMap: Map<string, string>, guessedIncorrectly: string[], toGuess:string | null) {
+  return {
+    color: `${ !areaMap.get(f.properties.code) ? theme.colors.success : guessedIncorrectly.indexOf(f.properties.nom) !== -1 ? theme.colors.error : theme.colors.parchmentDark}`, weight: 1,
+    fillColor: `${ !areaMap.get(f.properties.code) ? theme.colors.successLight : guessedIncorrectly.indexOf(f.properties.nom) !== -1 ? theme.colors.error : theme.colors.parchment}`,
+    fillOpacity: 0.4,
+    className: `
+      area-${f.properties.code}
+      ${f.properties.nom === toGuess ? 
+        (
+          guessedIncorrectly.length >=3 ?
+          'failed' :
+          'to-guess'
+        ) :
+        '' }`
+    }
+}
+
 export default Game;
+
+const GameStyled = styled.div`
+  background-color: ${theme.colors.parchmentWhite};
+`;

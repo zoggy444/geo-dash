@@ -5,7 +5,7 @@ import type {
   ControlPositionType,
   IntentType,
 } from "./types";
-import type { ComponentPropsWithoutRef, FormEvent } from "react";
+import type { ComponentPropsWithoutRef, FormEvent, ReactNode } from "react";
 
 export type ButtonProps = {
   label: string;
@@ -56,8 +56,13 @@ export type MapControlProps = {
   children?: React.ReactNode;
 };
 
+export type PanelProps = {
+  children: ReactNode;
+};
+
 export type RadioGroupProps<T> = {
   ariaLabel: string;
+  displayLabel?: boolean;
   values: T[];
   defaultValue: T;
   onValueChange: (value: T) => void;
