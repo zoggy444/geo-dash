@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 
 import GameSettings from './components/pages/GameSettings';
 import Game from './components/pages/Game';
-import type { AreaType } from './types';
+import type { AreaType } from './types/types';
 
 import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../data/regions-version-simplifiee.json';

@@ -13,8 +13,9 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 import GamePrompter from "./GamePrompter";
 import MapControl from "../reusable-ui/MapControl";
-import type { GameProps, GeoDataType } from '../../types';
+import type { GeoDataType } from '../../types/types';
 import { Button } from '@blueprintjs/core';
+import type { GameProps } from '../../types/propsTypes';
 
 function Game({
   gameMode,

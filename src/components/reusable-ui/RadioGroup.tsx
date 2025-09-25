@@ -2,11 +2,18 @@ import { RadioGroup as RadioGroupBase } from "radix-ui";
 import { useState } from "react";
 import { styled } from "@linaria/react";
 import RadioItem from "./RadioItem";
+import type { RadioGroupProps } from "../../types/propsTypes";
 
-export default function RadioGroup({ ariaLabel, values, onValueChange }) {
+export default function RadioGroup({
+  ariaLabel,
+  values,
+  onValueChange,
+}: RadioGroupProps) {
   const [itemSelected, setItemSelected] = useState(values[0]);
 
-  const handleSelect = (value) => {
+  const handleSelect = (value: string) => {
+    if (values.indexOf(itemSelected) === -1)
+      return console.error("Inexistant value selected: ", value);
     setItemSelected(value);
     onValueChange(value);
   };

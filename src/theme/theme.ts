@@ -4,8 +4,7 @@ const colors = {
   white: "#fff",
   background_white: "#f5f5f7",
   background_dark: "#292729",
-  primary: "#1ebb94ff",
-  primary_bowl: "#2bca95ff",
+  primary: "#22A0DA",
   green: "green",
   success: "#60bd4f",
   red: "#e25549",
@@ -18,6 +17,8 @@ const colors = {
   greyDark: "#6f737e",
   greyBlue: "#747b91",
   parchment: "#F2D592",
+  parchmentWhite: "#fcf5e5",
+  parchmentMedium: "#b98816",
   parchmentDark: "#3f2f07",
 } as const;
 
@@ -69,6 +70,7 @@ const shadows = {
   soft: "0 -2px 8px -2px rgb(0 0 0 / 10%",
   card: "0px 0px 20px 0px rgb(0 0 0 / 20%)",
   hoveredCard: `4px 4px 20px 2px ${colors.primary}`,
+  paneledElt: `1px 1px 3px ${colors.parchmentDark}`,
 } as const;
 
 export const theme = {

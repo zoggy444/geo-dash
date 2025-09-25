@@ -26,10 +26,10 @@
 
 @keyframes stroke_change {
   from {
-  stroke-width: 4;
+    stroke-width: 4;
   }
 
   to {
-  stroke-width: 1;
+    stroke-width: 1;
   }
 }

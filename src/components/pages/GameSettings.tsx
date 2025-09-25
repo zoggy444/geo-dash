@@ -1,9 +1,8 @@
 import "../../index.css";
-import type { AreaType, GameSettingsProps } from "../../types";
+import type { GameSettingsProps } from "../../types/propsTypes";
 import { styled } from "@linaria/react";
 import Button from "../reusable-ui/Button";
 import { theme } from "../../theme/theme";
-import { useState } from "react";
 import RadioGroup from "../reusable-ui/RadioGroup";
 
 function GameSettings({
@@ -15,25 +14,24 @@ function GameSettings({
 
   return (
     <GameSettingsStyled className="game-setting">
-      <p>
-        Welcome to Geoguesser Mini! Click the button below to start playing.
-      </p>
       <div className="panel">
+        <p>
+          Welcome to Geoguesser Mini! Click the button below to start playing.
+        </p>
         <RadioGroup
           ariaLabel="Game mode"
           values={radioValues}
           onValueChange={() => {}}
         />
+        <Button
+          label="Start Game"
+          intent="primary"
+          className="start-game-button"
+          onClick={onStartGame}
+        >
+          Start Game
+        </Button>
       </div>
-      <Button
-        label="Start Game"
-        intent="primary"
-        size="large"
-        className="start-game-button"
-        onClick={onStartGame}
-      >
-        Start Game
-      </Button>
     </GameSettingsStyled>
   );
 }
@@ -42,11 +40,16 @@ export default GameSettings;
 
 const GameSettingsStyled = styled.div`
   .panel {
-    border: 1px solid #3f2f07;
+    border: 1px solid ${theme.colors.parchmentDark};
     border-radius: ${theme.borderRadius.round};
     background-color: ${theme.colors.parchment};
-    color: #3f2f07;
+    color: ${theme.colors.parchmentDark};
     padding: ${theme.spacing.md};
-    box-shadow: 1px 1px 3px #3f2f07;
+    box-shadow: ${theme.shadows.paneledElt};
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 `;

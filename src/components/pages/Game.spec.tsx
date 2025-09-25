@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/experimental-ct-react";
 import Game from "./Game";
-import type { GameProps } from "../../types";
+import type { GameProps } from "../../types/propsTypes";
 
 const handleAreaClick = (name: string): void => {
   if (mockState.guessedCorrectly) return; // Do not allow more guesses if already guessed correctly

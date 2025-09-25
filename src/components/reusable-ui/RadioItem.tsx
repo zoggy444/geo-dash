@@ -2,8 +2,15 @@ import { RadioGroup as RadioGroupBase } from "radix-ui";
 import { useState } from "react";
 import { styled } from "@linaria/react";
 import { MdCheckCircle } from "react-icons/md";
+import type { RadioItemProps } from "../../types/propsTypes";
+import { theme } from "../../theme/theme";
 
-export default function RadioItem({ itemID, label, isSelected, onSelect }) {
+export default function RadioItem({
+  itemID,
+  label,
+  isSelected,
+  onSelect,
+}: RadioItemProps) {
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -15,7 +22,6 @@ export default function RadioItem({ itemID, label, isSelected, onSelect }) {
     console.log("click", itemID);
     onSelect(itemID);
   };
-  if (isSelected) console.log(itemID, " is selected !");
 
   return (
     <RadioItemStyled
@@ -50,7 +56,7 @@ const RadioItemStyled = styled.div`
     height: 20px;
     border-radius: 50%;
     border: none;
-    box-shadow: 0 2px 10px black;
+    box-shadow: ${theme.shadows.paneledElt};
     padding: 0;
   }
 

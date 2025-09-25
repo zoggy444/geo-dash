@@ -28,6 +28,8 @@ export type GeoDataType = {
 
 export type AreaType = "region" | "department";
 
+export type ButtonVariantType = "regular" | "default";
+
 export type ControlPositionType =
   | "bottomleft"
   | "bottomright"
@@ -46,36 +48,4 @@ export type GuessStateType = {
   deptWrongGuesses: string[];
 };
 
-export type GameSettingsProps = {
-  gameMode: string;
-  onChangeGameMode: (mode: AreaType) => void;
-  onStartGame: () => void;
-};
-
-export type GameProps = {
-  gameMode: AreaType;
-  victory: boolean;
-  toGuess: string | null;
-  guessedCorrectly: string | null;
-  guessedIncorrectly: string[];
-  regGuessMap: Map<string, string>;
-  dptGuessMap: Map<string, string>;
-  onAreaClick: (name: string) => void;
-  onNewRoundClick: () => void;
-  onSettingsClick: () => void;
-  onStartGameClick: () => void;
-};
-
-export type MapControlProps = {
-  position: ControlPositionType;
-  children?: React.ReactNode;
-};
-
-export type GamePrompterProps = {
-  victory: boolean;
-  toGuess: string | null;
-  guessedCorrectly: string | null;
-  guessedIncorrectly: string[];
-  onStartGameClick: () => void;
-  onNewRoundClick: () => void;
-};
+export type IntentType = "primary" | "success";
