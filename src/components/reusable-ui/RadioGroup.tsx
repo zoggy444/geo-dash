@@ -6,6 +6,7 @@ import type { RadioGroupProps } from "../../types/propsTypes";
 
 export default function RadioGroup<T>({
   ariaLabel,
+  displayLabel,
   values,
   defaultValue,
   onValueChange,
@@ -21,8 +22,9 @@ export default function RadioGroup<T>({
 
   return (
     <RadioGroupStyled>
+      {displayLabel && <div className="radio-group-label">{ariaLabel}</div>}
       <RadioGroupBase.Root
-        className="RadioGroupRoot"
+        className="radio-group-root"
         defaultValue={defaultValue as string}
         aria-label={ariaLabel}
         onValueChange={handleSelect}
@@ -42,7 +44,12 @@ export default function RadioGroup<T>({
 }
 
 const RadioGroupStyled = styled.div`
-  .RadioGroupRoot {
+  display: flex;
+  gap: 1rem;
+  .radio-group-label {
+    font-weight: bold;
+  }
+  .radio-group-root {
     display: flex;
     flex-direction: column;
     gap: 10px;

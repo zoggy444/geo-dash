@@ -1,5 +1,6 @@
-import { Button } from "@blueprintjs/core";
 import type { GamePrompterProps } from "../../types/propsTypes";
+import Button from "../reusable-ui/Button";
+import Panel from "../reusable-ui/Panel";
 
 function GamePrompter({
   victory,
@@ -11,13 +12,7 @@ function GamePrompter({
 }: GamePrompterProps) {
   if (!victory) {
     return (
-      <>
-        <div className="game-prompter">
-          <h2>Welcome to GeoGuessr Mini!</h2>
-          <p>Guess the area based on the map provided.</p>
-          <p>Click on an area to make your guess.</p>
-          <p>Good luck!</p>
-        </div>
+      <Panel>
         <p>
           Where is <i className="to-guess-name">{toGuess}</i> ?
         </p>
@@ -25,13 +20,11 @@ function GamePrompter({
           <>
             <p>You guessed correctly !</p>
             <Button
+              label="New Round"
               intent="primary"
-              size="large"
               className="next-round-button"
               onClick={onNewRoundClick}
-            >
-              New Round
-            </Button>
+            />
           </>
         )}
         {!guessedCorrectly && guessedIncorrectly.length !== 0 && (
@@ -43,31 +36,27 @@ function GamePrompter({
               <>
                 <p>You have made 3 incorrect guesses.</p>
                 <Button
+                  label="New Round"
                   intent="primary"
-                  size="large"
                   className="next-round-button"
                   onClick={onNewRoundClick}
-                >
-                  New Round
-                </Button>
+                />
               </>
             )}
           </>
         )}
-      </>
+      </Panel>
     );
   }
   return (
     <div className="game-prompter">
       <h2>YOU WON THE GAME</h2>
       <Button
+        label="Start Game"
         intent="primary"
-        size="large"
         className="start-game-button"
         onClick={onStartGameClick}
-      >
-        Start Game
-      </Button>
+      />
     </div>
   );
 }
