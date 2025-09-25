@@ -24,6 +24,8 @@ function getRandomKey(collection:Map<string, string>) {
     return keys[Math.floor(Math.random() * keys.length)];
 }
 
+const gameModes: AreaType[] = ["region", "department"];
+
 // @ todo: fix state
 
 function App() {
@@ -112,6 +114,7 @@ function App() {
         <>
           <h1>Geoguesser Mini</h1>
           <GameSettings 
+          gameModes={gameModes}
           gameMode={gameMode}
           onChangeGameMode={(m:AreaType) => setGameMode(m)}
           onStartGame={handleStartGame}/>

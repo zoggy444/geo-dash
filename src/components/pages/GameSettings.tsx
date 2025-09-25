@@ -1,5 +1,6 @@
 import "../../index.css";
 import type { GameSettingsProps } from "../../types/propsTypes";
+import type { AreaType } from "../../types/types";
 import { styled } from "@linaria/react";
 import Button from "../reusable-ui/Button";
 import { theme } from "../../theme/theme";
@@ -7,21 +8,21 @@ import RadioGroup from "../reusable-ui/RadioGroup";
 
 function GameSettings({
   gameMode,
+  gameModes,
   onChangeGameMode,
   onStartGame,
 }: GameSettingsProps) {
-  const radioValues = ["locate regions", "locate departments"];
-
   return (
     <GameSettingsStyled className="game-setting">
       <div className="panel">
         <p>
           Welcome to Geoguesser Mini! Click the button below to start playing.
         </p>
-        <RadioGroup
+        <RadioGroup<AreaType>
           ariaLabel="Game mode"
-          values={radioValues}
-          onValueChange={() => {}}
+          values={gameModes}
+          defaultValue={gameMode}
+          onValueChange={onChangeGameMode}
         />
         <Button
           label="Start Game"

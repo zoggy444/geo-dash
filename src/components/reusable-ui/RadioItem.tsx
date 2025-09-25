@@ -5,12 +5,12 @@ import { MdCheckCircle } from "react-icons/md";
 import type { RadioItemProps } from "../../types/propsTypes";
 import { theme } from "../../theme/theme";
 
-export default function RadioItem({
+export default function RadioItem<T>({
   itemID,
   label,
   isSelected,
   onSelect,
-}: RadioItemProps) {
+}: RadioItemProps<T>) {
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -19,7 +19,6 @@ export default function RadioItem({
     setIsHovered(false);
   };
   const handleClick = () => {
-    console.log("click", itemID);
     onSelect(itemID);
   };
 
@@ -31,15 +30,15 @@ export default function RadioItem({
     >
       <RadioGroupBase.Item
         className="RadioGroupItem"
-        value={itemID}
-        id={itemID}
+        value={itemID as string}
+        id={itemID as string}
       >
         {isHovered && !isSelected && <MdCheckCircle className="hovered" />}
         <RadioGroupBase.Indicator className="RadioGroupIndicator">
           <MdCheckCircle className="selected" />
         </RadioGroupBase.Indicator>
       </RadioGroupBase.Item>
-      <label className="Label" htmlFor={itemID}>
+      <label className="Label" htmlFor={itemID as string}>
         {label}
       </label>
     </RadioItemStyled>

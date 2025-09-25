@@ -15,7 +15,7 @@ export type GeoDataType = {
     | {
         type: string;
         geometry: {
-          type: string;
+            type: string;
           coordinates: number[][][][];
         };
         properties: {

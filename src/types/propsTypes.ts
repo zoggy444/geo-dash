@@ -45,7 +45,8 @@ export type GameProps = {
 };
 
 export type GameSettingsProps = {
-  gameMode: string;
+  gameModes: AreaType[];
+  gameMode: AreaType;
   onChangeGameMode: (mode: AreaType) => void;
   onStartGame: () => void;
 };
@@ -55,15 +56,16 @@ export type MapControlProps = {
   children?: React.ReactNode;
 };
 
-export type RadioGroupProps = {
+export type RadioGroupProps<T> = {
   ariaLabel: string;
-  values: string[];
-  onValueChange: (value: string) => void;
+  values: T[];
+  defaultValue: T;
+  onValueChange: (value: T) => void;
 };
 
-export type RadioItemProps = {
-  itemID: string;
+export type RadioItemProps<T> = {
+  itemID: T;
   label: string;
   isSelected: boolean;
-  onSelect: (itemID: string) => void;
+  onSelect: (itemID: T) => void;
 };
