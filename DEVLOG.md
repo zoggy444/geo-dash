@@ -1,16 +1,20 @@
 # DEV LOG
 
-## F05: Make setting into an in-game feature
+## F: Clean up state
+
+todo
+
+## F: Make setting into an in-game feature
 
 todo
 
 ## F04: Center prompter when active
 
-todo
+doing
 
 ## F03: Trigger new round automatically
 
-doing
+done
 
 ## F02: Replace blueprint.js with radix ui + linaria
 

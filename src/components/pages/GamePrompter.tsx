@@ -42,7 +42,7 @@ function GamePrompter({
             )}
           </>
         )}
-        {!guessedCorrectly && guessedIncorrectly.length == 0 && (
+        {!guessedCorrectly && guessedIncorrectly.length < 3 && (
           <h2>
             Where is <i className="to-guess-name">{toGuess}</i> ?
           </h2>
