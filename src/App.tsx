@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './index.css'
 import "normalize.css";
@@ -39,6 +39,17 @@ function App() {
   const [toGuess, setToGuess] = useState<string | null>(null);
   const [guessedCorrectly, setGuessedCorrectly] = useState<string | null>(null);
   const [guessedIncorrectly, setGuesseIncorrectly] = useState<string[]>([]);
+
+  const roundFinished = guessedCorrectly || guessedIncorrectly.length >= 3;
+
+  useEffect(() => {
+    if (roundFinished) {
+      const newRoundTimer = setTimeout(() => handleNewRound(), 3 * 1000);
+      return () => {
+        clearTimeout(newRoundTimer);
+      };
+    }
+  });
 
   const setNewToGuess = function () {
     let guessMap;

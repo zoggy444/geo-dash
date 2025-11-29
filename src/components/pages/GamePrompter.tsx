@@ -13,12 +13,9 @@ function GamePrompter({
   if (!victory) {
     return (
       <Panel>
-        <p>
-          Where is <i className="to-guess-name">{toGuess}</i> ?
-        </p>
         {guessedCorrectly && (
           <>
-            <p>You guessed correctly !</p>
+            <h2>You guessed correctly !</h2>
             <Button
               label="New Round"
               intent="primary"
@@ -30,11 +27,11 @@ function GamePrompter({
         {!guessedCorrectly && guessedIncorrectly.length !== 0 && (
           <>
             {guessedIncorrectly.length < 3 && (
-              <p>You guessed incorrectly... try again!</p>
+              <h2>You guessed incorrectly... try again!</h2>
             )}
             {guessedIncorrectly.length >= 3 && (
               <>
-                <p>You have made 3 incorrect guesses.</p>
+                <h2>You have made 3 incorrect guesses.</h2>
                 <Button
                   label="New Round"
                   intent="primary"
@@ -45,11 +42,16 @@ function GamePrompter({
             )}
           </>
         )}
+        {!guessedCorrectly && guessedIncorrectly.length == 0 && (
+          <h2>
+            Where is <i className="to-guess-name">{toGuess}</i> ?
+          </h2>
+        )}
       </Panel>
     );
   }
   return (
-    <div className="game-prompter">
+    <Panel>
       <h2>YOU WON THE GAME</h2>
       <Button
         label="Start Game"
@@ -57,7 +59,7 @@ function GamePrompter({
         className="start-game-button"
         onClick={onStartGameClick}
       />
-    </div>
+    </Panel>
   );
 }
 
