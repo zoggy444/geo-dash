@@ -8,7 +8,7 @@ todo
 
 todo
 
-## F04: Center prompter when active
+## F04: Make gameplay crispier
 
 doing
 

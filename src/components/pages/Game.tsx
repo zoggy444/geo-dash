@@ -42,7 +42,7 @@ function Game({
   const onGeoJsonClick = (e: LeafletEvent) => {
     const layer = e.propagatedFrom;
     const name = layer.feature.properties.nom;
-    return onAreaClick(name);
+    return onAreaClick(name, e.originalEvent.pageX, e.originalEvent.pageY);
   }
 
   const onGeoJsonMouseOver = (e: LeafletEvent) => {
@@ -64,7 +64,7 @@ function Game({
   }
 
   return (
-  <GameStyled> 
+  <GameStyled>
     <MapContainer
         center={MAP_CENTER}
         dragging={false}
@@ -85,20 +85,17 @@ function Game({
           }}>
         </GeoJSON>
       ))}
-      <MapControl key='topleft' position='topleft'>
+      <MapControl key='topright' position='topright'>
         <Panel>
           {/* @todo: ghost variant*/}
           <Button label="Quit Game" onClick={onSettingsClick}/>
         </Panel>
       </MapControl>
-      <MapControl key='bottomleft' position='bottomleft'>
-        <GamePrompter toGuess={toGuess} victory={victory} guessedCorrectly={guessedCorrectly}
-            guessedIncorrectly={guessedIncorrectly}
-            onStartGameClick={onStartGameClick}
-            onNewRoundClick={onNewRoundClick}/>
-      </MapControl>
+      <GamePrompter toGuess={toGuess} victory={victory} guessedCorrectly={guessedCorrectly}
+          guessedIncorrectly={guessedIncorrectly}
+          onStartGameClick={onStartGameClick}
+          onNewRoundClick={onNewRoundClick}/>
     </MapContainer>
-    
   </GameStyled>
   )
 }

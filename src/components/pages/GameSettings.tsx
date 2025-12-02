@@ -16,11 +16,11 @@ function GameSettings({
     <GameSettingsStyled className="game-setting">
       <Panel>
         <h2>Welcome to GeoGuessr Mini!</h2>
-        <p className="game-rules">
+        <div className="game-rules">
           <p>Guess the area based on the map provided.</p>
           <p>Click on an area to make your guess.</p>
           <p>Good luck!</p>{" "}
-        </p>
+        </div>
         <RadioGroup<AreaType>
           ariaLabel="Game mode"
           displayLabel={true}

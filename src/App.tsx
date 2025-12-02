@@ -13,6 +13,7 @@ import departmentData from '../data/departements-version-simplifiee.json' with {
 import regionData from '../data/regions-version-simplifiee.json';
 import { styled } from '@linaria/react';
 import { theme } from './theme/theme';
+import TooltipIconContainer from './components/reusable-ui/TooltipIconContainer';
 
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
@@ -39,6 +40,8 @@ function App() {
   const [toGuess, setToGuess] = useState<string | null>(null);
   const [guessedCorrectly, setGuessedCorrectly] = useState<string | null>(null);
   const [guessedIncorrectly, setGuesseIncorrectly] = useState<string[]>([]);
+  const [boxes, setBoxes] = useState<{ [key: string]: { Icon: React.ReactNode; x: number; y: number } }>({});
+  const [count, setCount] = useState(0);
 
   const roundFinished = guessedCorrectly || guessedIncorrectly.length >= 3;
 
@@ -62,6 +65,18 @@ function App() {
     setToGuess(guessMap.get(newKey) || null)
   }
 
+  const addBox = ({ success, pageX, pageY }) => {
+    setBoxes((boxes) => ({ ...boxes, [count]: { success: success, x: pageX, y: pageY } }));
+    setCount((count) => count + 1);
+    setTimeout(() => {
+      setBoxes((boxes) => {
+        const newBoxes = { ...boxes };
+        delete newBoxes[count];
+        return newBoxes;
+      });
+    }, 1000);
+  };
+
   const handleStartGame = () => {
     setInGame(true);
     setNewToGuess();
@@ -72,7 +87,7 @@ function App() {
     setRegGuessMap(new Map([...regInitKVMap]))
   }
 
-  const handleAreaClick = (name: string) => {
+  const handleAreaClick = (name: string, pageX: number, pageY: number) => {
     if (guessedCorrectly) return; // Do not allow more guesses if already guessed correctly
     if (guessedIncorrectly.indexOf(name) !== -1) return; // Don't guess several times the same area
     if (guessedIncorrectly.length >= 3) return; // Do not allow more than 3 incorrect guesses
@@ -93,8 +108,10 @@ function App() {
         if (newDptMap.size === 0) setVictory(true)
         setDptGuessMap(newDptMap)
       }
+      addBox({ success: true, pageX: pageX, pageY: pageY });
     } else {
       setGuesseIncorrectly([...guessedIncorrectly, name]);
+      addBox({ success: false, pageX: pageX, pageY: pageY });
     }
   }
 
@@ -132,6 +149,7 @@ function App() {
           onStartGame={handleStartGame}/>
         </>
       )}
+      <TooltipIconContainer boxes={boxes}/>
     </AppStyled>
   )
 }
