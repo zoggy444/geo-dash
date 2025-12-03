@@ -7,34 +7,30 @@ function GamePrompter({
   gameStage,
   toGuess,
   onStartGameClick,
-  onNewRoundClick,
 }: GamePrompterProps) {
-  if (gameStage !== "victory") {
-    console.log(gameStage);
-    return (
-      <GamePrompterStyled $active={gameStage !== "round_in_progress"}>
-        <Panel>
-          {gameStage == "game_start" && <h2>Guess the place !</h2>}
-          {gameStage == "round_in_progress" && (
-            <h2 className="to-guess-name">{toGuess} ?</h2>
-          )}
-          {gameStage == "round_success" && <h2>Correct !</h2>}
-          {gameStage == "round_fail" && <h2>You failed...</h2>}
-          {gameStage == "victory" && (
-            <>
-              <h2>Victory !</h2>
-              <Button
-                label="Start Game"
-                intent="primary"
-                className="start-game-button"
-                onClick={onStartGameClick}
-              />
-            </>
-          )}
-        </Panel>
-      </GamePrompterStyled>
-    );
-  }
+  return (
+    <GamePrompterStyled $active={gameStage !== "round_in_progress"}>
+      <Panel>
+        {gameStage == "game_start" && <h2>Guess the place !</h2>}
+        {gameStage == "round_in_progress" && (
+          <h2 className="to-guess-name">{toGuess} ?</h2>
+        )}
+        {gameStage == "round_success" && <h2>Correct !</h2>}
+        {gameStage == "round_fail" && <h2>You failed...</h2>}
+        {gameStage == "victory" && (
+          <>
+            <h2>Victory !</h2>
+            <Button
+              label="Start Game"
+              intent="primary"
+              className="start-game-button"
+              onClick={onStartGameClick}
+            />
+          </>
+        )}
+      </Panel>
+    </GamePrompterStyled>
+  );
 }
 
 export default GamePrompter;
