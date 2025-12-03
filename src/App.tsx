@@ -5,7 +5,6 @@ import "normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 
-import GameSettings from './components/pages/GameSettings';
 import Game from './components/pages/Game';
 import type { AreaType } from './types/types';
 
@@ -29,6 +28,16 @@ function getRandomKey(collection:Map<string, string>) {
 
 const gameModes: AreaType[] = ["region", "department"];
 
+type GameStage = "game_start" | "round_in_progress" | "round_fail" | "round_success" | "victory" | "game_over";
+
+function getGameStage (inGame: boolean, victory: boolean, guessedCorrectly: string | null, guessedIncorrectly: string[]): GameStage {
+  if (!inGame) return "game_start";
+  if (victory) return "victory";
+  if (guessedCorrectly) return "round_success";
+  if (guessedIncorrectly.length >=3 ) return "round_fail";
+  return "round_in_progress";
+}
+
 // @ todo: fix state
 
 function App() {
@@ -43,15 +52,25 @@ function App() {
   const [boxes, setBoxes] = useState<{ [key: string]: { Icon: React.ReactNode; x: number; y: number } }>({});
   const [count, setCount] = useState(0);
 
-  const roundFinished = guessedCorrectly || guessedIncorrectly.length >= 3;
+  const gameStage = getGameStage(inGame, victory, guessedCorrectly, guessedIncorrectly);
 
   useEffect(() => {
-    if (roundFinished) {
-      const newRoundTimer = setTimeout(() => handleNewRound(), 3 * 1000);
-      return () => {
-        clearTimeout(newRoundTimer);
-      };
+    switch (gameStage) {
+      case "round_fail":
+      case "round_success": {
+          const newRoundTimer = setTimeout(() => handleNewRound(), 1100);
+          return () => {
+            clearTimeout(newRoundTimer);
+          };
+        }
+      case "game_start": {
+          const startGameTimer = setTimeout(() => handleStartGame(), 1000);
+          return () => {
+            clearTimeout(startGameTimer);
+          };
+        }
     }
+
   });
 
   const setNewToGuess = function () {
@@ -68,13 +87,6 @@ function App() {
   const addBox = ({ success, pageX, pageY }) => {
     setBoxes((boxes) => ({ ...boxes, [count]: { success: success, x: pageX, y: pageY } }));
     setCount((count) => count + 1);
-    setTimeout(() => {
-      setBoxes((boxes) => {
-        const newBoxes = { ...boxes };
-        delete newBoxes[count];
-        return newBoxes;
-      });
-    }, 1000);
   };
 
   const handleStartGame = () => {
@@ -119,6 +131,7 @@ function App() {
     setGuessedCorrectly(null);
     setGuesseIncorrectly([]); // Reset incorrect guesses
     setNewToGuess();
+    setBoxes({});
   }
 
   const handleSettingsClick = () => {
@@ -127,28 +140,16 @@ function App() {
 
   return (
     <AppStyled>
-      {inGame ? (
-        <>
-          <Game gameMode={gameMode} toGuess={toGuess}
-            victory={victory}
-            guessedCorrectly={guessedCorrectly}
-            guessedIncorrectly={guessedIncorrectly}
-            regGuessMap={regGuessMap}
-            dptGuessMap={dptGuessMap}
-            onAreaClick={handleAreaClick}
-            onNewRoundClick={handleNewRound}
-            onSettingsClick={handleSettingsClick}
-            onStartGameClick={handleStartGame}/>
-        </>  
-      ) : (
-        <>
-          <GameSettings 
-          gameModes={gameModes}
-          gameMode={gameMode}
-          onChangeGameMode={(m:AreaType) => setGameMode(m)}
-          onStartGame={handleStartGame}/>
-        </>
-      )}
+      <Game gameMode={gameMode} toGuess={toGuess}
+        gameStage={gameStage}
+        guessedCorrectly={guessedCorrectly}
+        guessedIncorrectly={guessedIncorrectly}
+        regGuessMap={regGuessMap}
+        dptGuessMap={dptGuessMap}
+        onAreaClick={handleAreaClick}
+        onNewRoundClick={handleNewRound}
+        onSettingsClick={handleSettingsClick}
+        onStartGameClick={handleStartGame}/>
       <TooltipIconContainer boxes={boxes}/>
     </AppStyled>
   )

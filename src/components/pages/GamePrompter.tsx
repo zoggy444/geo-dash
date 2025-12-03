@@ -4,63 +4,37 @@ import Button from "../reusable-ui/Button";
 import Panel from "../reusable-ui/Panel";
 
 function GamePrompter({
-  victory,
+  gameStage,
   toGuess,
-  guessedCorrectly,
-  guessedIncorrectly,
   onStartGameClick,
   onNewRoundClick,
 }: GamePrompterProps) {
-  if (!victory) {
+  if (gameStage !== "victory") {
+    console.log(gameStage);
     return (
-      <GamePrompterStyled $active={false}>
+      <GamePrompterStyled $active={gameStage !== "round_in_progress"}>
         <Panel>
-          {guessedCorrectly && (
+          {gameStage == "game_start" && <h2>Guess the place !</h2>}
+          {gameStage == "round_in_progress" && (
+            <h2 className="to-guess-name">{toGuess} ?</h2>
+          )}
+          {gameStage == "round_success" && <h2>Correct !</h2>}
+          {gameStage == "round_fail" && <h2>You failed...</h2>}
+          {gameStage == "victory" && (
             <>
-              <h2>You guessed correctly !</h2>
+              <h2>Victory !</h2>
               <Button
-                label="New Round"
+                label="Start Game"
                 intent="primary"
-                className="next-round-button"
-                onClick={onNewRoundClick}
+                className="start-game-button"
+                onClick={onStartGameClick}
               />
             </>
-          )}
-          {!guessedCorrectly && guessedIncorrectly.length !== 0 && (
-            <>
-              {guessedIncorrectly.length >= 3 && (
-                <>
-                  <h2>You have made 3 incorrect guesses.</h2>
-                  <Button
-                    label="New Round"
-                    intent="primary"
-                    className="next-round-button"
-                    onClick={onNewRoundClick}
-                  />
-                </>
-              )}
-            </>
-          )}
-          {!guessedCorrectly && guessedIncorrectly.length < 3 && (
-            <h2>
-              Where is <i className="to-guess-name">{toGuess}</i> ?
-            </h2>
           )}
         </Panel>
       </GamePrompterStyled>
     );
   }
-  return (
-    <Panel>
-      <h2>YOU WON THE GAME</h2>
-      <Button
-        label="Start Game"
-        intent="primary"
-        className="start-game-button"
-        onClick={onStartGameClick}
-      />
-    </Panel>
-  );
 }
 
 export default GamePrompter;

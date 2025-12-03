@@ -39,6 +39,11 @@ export default function TooltipIconContainer({
 const TooltipIconContainerStyled = styled.div`
   .box {
     animation: slideup 1.1s;
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    -ms-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
     position: absolute;
     width: 50px;
     height: 50px;

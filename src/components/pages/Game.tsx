@@ -24,7 +24,7 @@ import Button from '../reusable-ui/Button';
 function Game({
   gameMode,
   toGuess,
-  victory,
+  gameStage,
   guessedCorrectly,
   guessedIncorrectly,
   dptGuessMap,
@@ -91,7 +91,7 @@ function Game({
           <Button label="Quit Game" onClick={onSettingsClick}/>
         </Panel>
       </MapControl>
-      <GamePrompter toGuess={toGuess} victory={victory} guessedCorrectly={guessedCorrectly}
+      <GamePrompter toGuess={toGuess} gameStage={gameStage} guessedCorrectly={guessedCorrectly}
           guessedIncorrectly={guessedIncorrectly}
           onStartGameClick={onStartGameClick}
           onNewRoundClick={onNewRoundClick}/>
