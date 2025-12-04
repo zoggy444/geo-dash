@@ -1,7 +1,6 @@
 import { MapContainer, Pane } from 'react-leaflet'
 import { GeoJSON } from 'react-leaflet/GeoJSON'
 import type { GeoJsonObject } from 'geojson';
-import type { LeafletEvent, } from 'leaflet';
 
 import departmentData from '../../../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../../../data/regions-version-simplifiee.json';
@@ -20,6 +19,7 @@ import { theme } from '../../theme/theme';
 import Panel from '../reusable-ui/Panel';
 import MapControl from '../reusable-ui/MapControl';
 import Button from '../reusable-ui/Button';
+import type { LeafletEventExtended } from '../../types/extendedTypes';
 
 function Game({
   gameMode,
@@ -39,13 +39,14 @@ function Game({
   const areaMap: Map<string, string> = gameMode === 'region' ? regGuessMap : dptGuessMap;;
 
 
-  const onGeoJsonClick = (e: LeafletEvent) => {
+  const onGeoJsonClick = (e: LeafletEventExtended) => {
     const layer = e.propagatedFrom;
     const name = layer.feature.properties.nom;
+    console.log(e);
     return onAreaClick(name, e.originalEvent.pageX, e.originalEvent.pageY);
   }
 
-  const onGeoJsonMouseOver = (e: LeafletEvent) => {
+  const onGeoJsonMouseOver = (e: LeafletEventExtended) => {
     const layer = e.propagatedFrom;
     // Highlight the hovered area without changing color
     layer.setStyle({
@@ -54,7 +55,7 @@ function Game({
     })
   }
 
-  const onGeoJsonMouseOut = (e: LeafletEvent) => {
+  const onGeoJsonMouseOut = (e: LeafletEventExtended) => {
     const layer = e.propagatedFrom;
     // Reset the style when mouse leaves
     layer.setStyle({

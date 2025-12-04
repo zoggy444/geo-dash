@@ -31,6 +31,8 @@ export type AreaType = "region" | "department";
 
 export type ButtonVariantType = "regular" | "default";
 
+export type GameStageType = "game_start" | "round_in_progress" | "round_fail" | "round_success" | "victory" | "game_over";
+
 export type ControlPositionType =
   | "bottomleft"
   | "bottomright"

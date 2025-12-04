@@ -6,13 +6,14 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 
 import Game from './components/pages/Game';
-import type { AreaType } from './types/types';
+import type { AreaType, GameStageType } from './types/types';
 
 import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../data/regions-version-simplifiee.json';
 import { styled } from '@linaria/react';
 import { theme } from './theme/theme';
 import TooltipIconContainer from './components/reusable-ui/TooltipIconContainer';
+import type { ClickReactionProps, TooltipContainerProps } from './types/propsTypes';
 
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
@@ -26,11 +27,7 @@ function getRandomKey(collection:Map<string, string>) {
     return keys[Math.floor(Math.random() * keys.length)];
 }
 
-const gameModes: AreaType[] = ["region", "department"];
-
-type GameStage = "game_start" | "round_in_progress" | "round_fail" | "round_success" | "victory" | "game_over";
-
-function getGameStage (inGame: boolean, victory: boolean, guessedCorrectly: string | null, guessedIncorrectly: string[]): GameStage {
+function getGameStage (inGame: boolean, victory: boolean, guessedCorrectly: string | null, guessedIncorrectly: string[]): GameStageType {
   if (!inGame) return "game_start";
   if (victory) return "victory";
   if (guessedCorrectly) return "round_success";
@@ -43,13 +40,13 @@ function getGameStage (inGame: boolean, victory: boolean, guessedCorrectly: stri
 function App() {
   const [inGame, setInGame] = useState(false);
   const [victory, setVictory] = useState(false);
-  const [gameMode, setGameMode] = useState<AreaType>('region');
+  const [gameMode, ] = useState<AreaType>('region');
   const [dptGuessMap, setDptGuessMap] = useState(new Map([...dptInitKVMap]))
   const [regGuessMap, setRegGuessMap] = useState(new Map([...regInitKVMap]))
   const [toGuess, setToGuess] = useState<string | null>(null);
   const [guessedCorrectly, setGuessedCorrectly] = useState<string | null>(null);
   const [guessedIncorrectly, setGuesseIncorrectly] = useState<string[]>([]);
-  const [boxes, setBoxes] = useState<{ [key: string]: { Icon: React.ReactNode; x: number; y: number } }>({});
+  const [boxes, setBoxes] = useState<TooltipContainerProps>({boxes: {}});
   const [count, setCount] = useState(0);
 
   const gameStage = getGameStage(inGame, victory, guessedCorrectly, guessedIncorrectly);
@@ -84,8 +81,8 @@ function App() {
     setToGuess(guessMap.get(newKey) || null)
   }
 
-  const addBox = ({ success, pageX, pageY }) => {
-    setBoxes((boxes) => ({ ...boxes, [count]: { success: success, x: pageX, y: pageY } }));
+  const addBox = (props: ClickReactionProps) => {
+    setBoxes((boxes) => ({ ...boxes, [count]: props }));
     setCount((count) => count + 1);
   };
 
@@ -120,10 +117,10 @@ function App() {
         if (newDptMap.size === 0) setVictory(true)
         setDptGuessMap(newDptMap)
       }
-      addBox({ success: true, pageX: pageX, pageY: pageY });
+      addBox({ success: true, x: pageX, y: pageY });
     } else {
       setGuesseIncorrectly([...guessedIncorrectly, name]);
-      addBox({ success: false, pageX: pageX, pageY: pageY });
+      addBox({ success: false, x: pageX, y: pageY });
     }
   }
 
@@ -131,7 +128,8 @@ function App() {
     setGuessedCorrectly(null);
     setGuesseIncorrectly([]); // Reset incorrect guesses
     setNewToGuess();
-    setBoxes({});
+    setBoxes({boxes: {}});
+    setCount(0);
   }
 
   const handleSettingsClick = () => {

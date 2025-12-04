@@ -14,8 +14,8 @@ const handleAreaClick = (name: string): void => {
 };
 
 const mockState: GameProps = {
+  gameStage: "game_start",
   gameMode: "region",
-  victory: false,
   toGuess: "Bretagne",
   guessedCorrectly: null,
   guessedIncorrectly: [],

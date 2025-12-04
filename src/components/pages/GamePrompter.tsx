@@ -1,5 +1,8 @@
 import { styled } from "@linaria/react";
-import type { GamePrompterProps } from "../../types/propsTypes";
+import type {
+  GamePrompterProps,
+  GamePrompterStyledProps,
+} from "../../types/propsTypes";
 import Button from "../reusable-ui/Button";
 import Panel from "../reusable-ui/Panel";
 import { useEffect, useState } from "react";
@@ -49,7 +52,7 @@ function GamePrompter({
 
 export default GamePrompter;
 
-const GamePrompterStyled = styled.div`
+const GamePrompterStyled = styled.div<GamePrompterStyledProps>`
   position: absolute;
   top: ${({ $active }) => ($active ? "50%" : "0")};
   left: ${({ $active }) => ($active ? "50%" : "0")};

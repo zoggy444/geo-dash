@@ -1,18 +1,19 @@
 import { styled } from "@linaria/react";
 import { FaGrinStars, FaFrownOpen } from "react-icons/fa";
+import type { TooltipContainerProps } from "../../types/propsTypes";
 
-export default function TooltipIconContainer({
-  boxes,
-  children,
-}: {
-  boxes: { [key: string]: { success: boolean; x: number; y: number } };
-  children?: React.ReactNode;
-}) {
-  const success_boxes = Object.values(boxes).filter(
-    (box) => box.success && box
+export default function TooltipIconContainer({ boxes }: TooltipContainerProps) {
+  const success_boxes = Object.assign(
+    {},
+    ...Object.entries(boxes)
+      .filter(([, v]) => v.success)
+      .map(([k, v]) => ({ [k]: v }))
   );
-  const failure_boxes = Object.values(boxes).filter(
-    (box) => !box.success && box
+  const failure_boxes = Object.assign(
+    {},
+    ...Object.entries(boxes)
+      .filter(([, v]) => !v.success)
+      .map(([k, v]) => ({ [k]: v }))
   );
 
   return (
@@ -31,7 +32,6 @@ export default function TooltipIconContainer({
           style={{ left: failure_boxes[key].x, top: failure_boxes[key].y }}
         />
       ))}
-      {children}
     </TooltipIconContainerStyled>
   );
 }

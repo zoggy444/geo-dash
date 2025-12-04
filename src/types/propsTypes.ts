@@ -3,6 +3,7 @@ import type {
   AreaType,
   ButtonVariantType,
   ControlPositionType,
+  GameStageType,
   IntentType,
 } from "./types";
 import type { ComponentPropsWithoutRef, FormEvent, ReactNode } from "react";
@@ -21,8 +22,14 @@ export type ButtonStyledProps = {
   $variant: ButtonVariantType;
 };
 
+export type ClickReactionProps = {
+  success: boolean;
+  x: number;
+  y: number;
+};
+
 export type GamePrompterProps = {
-  victory: boolean;
+  gameStage: GameStageType;
   toGuess: string | null;
   guessedCorrectly: string | null;
   guessedIncorrectly: string[];
@@ -30,15 +37,19 @@ export type GamePrompterProps = {
   onNewRoundClick: () => void;
 };
 
+export type GamePrompterStyledProps = {
+  $active: boolean;
+};
+
 export type GameProps = {
+  gameStage: GameStageType;
   gameMode: AreaType;
-  victory: boolean;
   toGuess: string | null;
   guessedCorrectly: string | null;
   guessedIncorrectly: string[];
   regGuessMap: Map<string, string>;
   dptGuessMap: Map<string, string>;
-  onAreaClick: (name: string) => void;
+  onAreaClick: (name: string, pageX: number, pageY: number) => void;
   onNewRoundClick: () => void;
   onSettingsClick: () => void;
   onStartGameClick: () => void;
@@ -73,4 +84,8 @@ export type RadioItemProps<T> = {
   label: string;
   isSelected: boolean;
   onSelect: (itemID: T) => void;
+};
+
+export type TooltipContainerProps = {
+  boxes: { [key: number]: ClickReactionProps };
 };
