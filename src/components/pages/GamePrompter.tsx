@@ -17,7 +17,7 @@ function GamePrompter({
       return () => {
         clearTimeout(timer);
       };
-    }else if (!active){
+    } else if (!active) {
       setActive(true);
     }
   }, [gameStage, active]);

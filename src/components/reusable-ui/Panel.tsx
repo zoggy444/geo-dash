@@ -3,11 +3,7 @@ import { theme } from "../../theme/theme";
 import type { PanelProps } from "../../types/propsTypes";
 
 function Panel({ children }: PanelProps) {
-  return (
-    <PanelStyled>
-      {children}
-    </PanelStyled>
-  );
+  return <PanelStyled>{children}</PanelStyled>;
 }
 
 export default Panel;
@@ -23,5 +19,4 @@ const PanelStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
 `;

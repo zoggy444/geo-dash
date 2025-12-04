@@ -1,4 +1,4 @@
-import { MapContainer } from 'react-leaflet'
+import { MapContainer, Pane } from 'react-leaflet'
 import { GeoJSON } from 'react-leaflet/GeoJSON'
 import type { GeoJsonObject } from 'geojson';
 import type { LeafletEvent, } from 'leaflet';
@@ -71,17 +71,26 @@ function Game({
         zoom={6}
         scrollWheelZoom={false}
         zoomControl={false}
+        doubleClickZoom={false}
         >
-      {/* special key for area to guess to force a rerender on third fail guess and allow className to change*/}
+      <Pane name="success" style={{ zIndex: 10 }}/>
+      <Pane name="failure" style={{ zIndex: 40 }}/>
+      <Pane name="yet-to-guess" style={{ zIndex: 20 }}/>
+      {/* Random key to force a rerender everytime. Else, className changes won't be applied.
+        Furthermore, when a new area to guess was selected, it was the only one being rerendered, 
+        Causing it's border to overlay on top of already guessed area, making it easy to spot.
+        I couldn't find a better way to do this than a full map rerender each round.
+      */}
       {geojsonData.features.map((f) => (
         <GeoJSON
-          key={`${f.properties.nom === toGuess ? guessedIncorrectly.length >=3 ? 'failed-' : 'to-guess-' : '' }${f.properties.code}`}
+          key={(+new Date * Math.random()).toString(36).substring(0,6)}
           data={f as GeoJsonObject}
           style={getGeoJsonStyle(f, areaMap, guessedIncorrectly, toGuess)}
+          pane={`${ !areaMap.get(f.properties.code) ? "success" : guessedIncorrectly.indexOf(f.properties.nom) !== -1 ? "failure" : "yet-to-guess"}`}
           eventHandlers={{
-          click: onGeoJsonClick,
-          mouseover: onGeoJsonMouseOver,
-          mouseout: onGeoJsonMouseOut
+            click: onGeoJsonClick,
+            mouseover: onGeoJsonMouseOver,
+            mouseout: onGeoJsonMouseOut,
           }}>
         </GeoJSON>
       ))}
