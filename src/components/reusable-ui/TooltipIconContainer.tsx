@@ -18,20 +18,22 @@ export default function TooltipIconContainer({ boxes }: TooltipContainerProps) {
 
   return (
     <TooltipIconContainerStyled>
-      {Object.keys(success_boxes).map((key) => (
-        <FaGrinStars
-          key={key}
-          className="box"
-          style={{ left: success_boxes[key].x, top: success_boxes[key].y }}
-        />
-      ))}
-      {Object.keys(failure_boxes).map((key) => (
-        <FaFrownOpen
-          key={key}
-          className="box"
-          style={{ left: failure_boxes[key].x, top: failure_boxes[key].y }}
-        />
-      ))}
+      {Object.keys(success_boxes).length > 0 &&
+        Object.keys(success_boxes).map((key) => (
+          <FaGrinStars
+            key={key}
+            className="box"
+            style={{ left: success_boxes[key].x, top: success_boxes[key].y }}
+          />
+        ))}
+      {Object.keys(failure_boxes).length > 0 &&
+        Object.keys(failure_boxes).map((key) => (
+          <FaFrownOpen
+            key={key}
+            className="box"
+            style={{ left: failure_boxes[key].x, top: failure_boxes[key].y }}
+          />
+        ))}
     </TooltipIconContainerStyled>
   );
 }

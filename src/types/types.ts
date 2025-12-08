@@ -1,3 +1,9 @@
+import type { ClickReactionProps } from "./propsTypes";
+
+export type BoxObjType = {
+  [key: number]: ClickReactionProps;
+}
+
 export type GeoDataType = {
   type: string;
   features: GeoFeatureType[];

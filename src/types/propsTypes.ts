@@ -1,6 +1,7 @@
 import type { IconType } from "react-icons";
 import type {
   AreaType,
+  BoxObjType,
   ButtonVariantType,
   ControlPositionType,
   GameStageType,
@@ -87,5 +88,5 @@ export type RadioItemProps<T> = {
 };
 
 export type TooltipContainerProps = {
-  boxes: { [key: number]: ClickReactionProps };
+  boxes: BoxObjType;
 };

@@ -6,14 +6,14 @@ import "@blueprintjs/core/lib/css/blueprint.css";
 import 'leaflet/dist/leaflet.css';
 
 import Game from './components/pages/Game';
-import type { AreaType, GameStageType } from './types/types';
+import type { AreaType, BoxObjType, GameStageType } from './types/types';
 
 import departmentData from '../data/departements-version-simplifiee.json' with { type: "json" };
 import regionData from '../data/regions-version-simplifiee.json';
 import { styled } from '@linaria/react';
 import { theme } from './theme/theme';
 import TooltipIconContainer from './components/reusable-ui/TooltipIconContainer';
-import type { ClickReactionProps, TooltipContainerProps } from './types/propsTypes';
+import type { ClickReactionProps } from './types/propsTypes';
 
 const regInitKVMap = new Map<string, string>(
   regionData.features.map(feature => [feature.properties.code, feature.properties.nom]
@@ -46,7 +46,7 @@ function App() {
   const [toGuess, setToGuess] = useState<string | null>(null);
   const [guessedCorrectly, setGuessedCorrectly] = useState<string | null>(null);
   const [guessedIncorrectly, setGuesseIncorrectly] = useState<string[]>([]);
-  const [boxes, setBoxes] = useState<TooltipContainerProps>({boxes: {}});
+  const [boxes, setBoxes] = useState<BoxObjType>({});
   const [count, setCount] = useState(0);
 
   const gameStage = getGameStage(inGame, victory, guessedCorrectly, guessedIncorrectly);
@@ -128,7 +128,7 @@ function App() {
     setGuessedCorrectly(null);
     setGuesseIncorrectly([]); // Reset incorrect guesses
     setNewToGuess();
-    setBoxes({boxes: {}});
+    setBoxes({});
     setCount(0);
   }
 
